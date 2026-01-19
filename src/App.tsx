@@ -1,15 +1,8 @@
-import Sample from "@/Sample";
-import { useState } from "react";
+import { Box } from "@chakra-ui/react";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <>
-      <Sample />
-    </>
-  );
+  return <Box h="100vh">APP</Box>;
 }
 
 export default App;
