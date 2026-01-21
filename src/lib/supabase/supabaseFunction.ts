@@ -1,7 +1,6 @@
 import { type Tables } from "@/lib/supabase/schema";
 import { supabase } from "./supabase";
 import { User } from "@/domain/User";
-
 export const fetchAllUsers = async (): Promise<Tables<"users">[]> => {
   const res = await supabase.from("users").select("*");
 
@@ -13,8 +12,6 @@ export const fetchAllUsers = async (): Promise<Tables<"users">[]> => {
 };
 
 export const fetchUser = async (userId: string) => {
-  // const usersQuery = await supabase.from("users").select("*").eq("id", userId);
-
   const userWithSkillQuery = await supabase
     .from("user_skill")
     .select(
@@ -42,15 +39,36 @@ export const fetchUser = async (userId: string) => {
     );
   });
 
-  // const user = new User(
-  //   userWithSkillQuery.data[0].users.id,
-  //   userWithSkillQuery.data[0].users.name,
-  //   userWithSkillQuery.data[0].users.description,
-  //   userWithSkillQuery.data[0].users.github_id,
-  //   userWithSkillQuery.data[0].users.qiita_id,
-  //   userWithSkillQuery.data[0].users.x_id,
-  //   userWithSkillQuery.data[0].skills.name,
-  // );
-
   return users;
+};
+
+interface RegisterArgs {
+  englishWord: string;
+  userName: string;
+  description: string;
+  skill: number[];
+  githubId: string;
+  qiitaId: string;
+  xId: string;
+}
+
+export const insertUser = async (args: RegisterArgs) => {
+  const { error: userError, data: userData } = await supabase
+    .from("users")
+    .insert({
+      id: args.englishWord,
+      name: args.userName,
+      description: args.description,
+      github_id: args.githubId,
+      x_id: args.xId,
+      qiita_id: args.qiitaId,
+    })
+    .select("*");
+  if (userData === null || userData.length === 0) return;
+  const { error: userSkillError, data: userSkillData } = await supabase
+    .from("user_skill")
+    .insert({
+      user_id: userData[0].id,
+      skill_id: args.skill[0],
+    });
 };

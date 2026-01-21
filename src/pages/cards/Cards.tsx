@@ -1,7 +1,6 @@
 import Card from "@/components/molecules/Card";
 import { type User } from "@/domain/User";
 import { fetchUser } from "@/lib/supabase/supabaseFunction";
-import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
@@ -32,11 +31,11 @@ const Cards = () => {
   }
 
   return (
-    <Flex align={"center"} justify={"center"} px="24px" py="48px">
+    <>
       {users.map((user) => (
         <Card key={user.userId} user={user} />
       ))}
-    </Flex>
+    </>
   );
 };
 
