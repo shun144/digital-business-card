@@ -1,26 +1,24 @@
-import { type Tables } from "@/lib/supabase/schema";
+import Card from "@/components/molecules/Card";
+import { type User } from "@/domain/User";
 import { fetchUser } from "@/lib/supabase/supabaseFunction";
+import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 
 const Cards = () => {
-  const [user, setUser] = useState<Tables<"users"> | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const navigation = useNavigate();
   const { id } = useParams();
+  const [users, setUsers] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!id) return;
-
     (async () => {
       try {
-        setIsLoading(true);
         const fetchedUser = await fetchUser(id);
-        console.log(fetchedUser);
-        // setUser(fetchedUser);
+        setUsers(fetchedUser);
+        setIsLoading(false);
       } catch (error) {
       } finally {
-        setIsLoading(false);
       }
     })();
   }, []);
@@ -29,16 +27,16 @@ const Cards = () => {
     return <div>Loading中</div>;
   }
 
+  if (users.length === 0) {
+    return <div>該当するユーザが存在しません</div>;
+  }
+
   return (
-    <div>
-      {user ? (
-        <div>
-          <div>{user.name}</div>
-        </div>
-      ) : (
-        <div>該当するユーザが存在しません</div>
-      )}
-    </div>
+    <Flex align={"center"} justify={"center"} px="24px" py="48px">
+      {users.map((user) => (
+        <Card key={user.userId} user={user} />
+      ))}
+    </Flex>
   );
 };
 
