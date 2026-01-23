@@ -47,6 +47,7 @@ const Card: FC<Props> = ({ user }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 href={`${user.githubUrl}`}
+                aria-label="Githubリンク"
               >
                 <FaGithub size={24} />
               </Link>
@@ -55,6 +56,7 @@ const Card: FC<Props> = ({ user }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 href={`${user.qiitaUrl}`}
+                aria-label="Qiitaリンク"
               >
                 <MdOutlineLibraryBooks size={24} />
               </Link>
@@ -63,6 +65,7 @@ const Card: FC<Props> = ({ user }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 href={`${user.xUrl}`}
+                aria-label="Xリンク"
               >
                 <BsTwitterX size={24} />
               </Link>
