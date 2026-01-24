@@ -28,9 +28,9 @@ interface RegisterProps {
 
 const frameworks = createListCollection({
   items: [
-    { label: "React", value: 0 },
-    { label: "TypeScript", value: 1 },
-    { label: "Github", value: 2 },
+    { label: "React", value: 1 },
+    { label: "TypeScript", value: 2 },
+    { label: "Github", value: 3 },
   ],
 });
 
@@ -47,8 +47,9 @@ const Register = () => {
   const onSubmit = useCallback(
     handleSubmit(async (formData) => {
       try {
-        await insertUser(formData);
-        navigate("/");
+        // console.log({ formData });
+        // await insertUser(formData);
+        // navigate("/");
       } catch (error) {}
     }),
     [],
@@ -63,11 +64,13 @@ const Register = () => {
           <form onSubmit={onSubmit} id="register">
             <Stack gap="8">
               <Field.Root invalid={!!errors.englishWord}>
-                <Field.Label>好きな英単語</Field.Label>
+                <Field.Label htmlFor="englishWord">好きな英単語</Field.Label>
                 <Input
                   id="englishWord"
                   placeholder="coffee"
-                  {...register("englishWord")}
+                  {...register("englishWord", {
+                    required: "好きな英単語は必須項目です",
+                  })}
                 />
                 <Field.ErrorText>
                   {errors.englishWord && errors.englishWord.message}
@@ -75,7 +78,7 @@ const Register = () => {
               </Field.Root>
 
               <Field.Root invalid={!!errors.userName}>
-                <Field.Label>お名前</Field.Label>
+                <Field.Label htmlFor="userName">お名前</Field.Label>
                 <Input id="userName" {...register("userName")} />
                 <Field.ErrorText>
                   {errors.userName && errors.userName.message}
@@ -83,7 +86,7 @@ const Register = () => {
               </Field.Root>
 
               <Field.Root invalid={!!errors.description}>
-                <Field.Label>自己紹介</Field.Label>
+                <Field.Label htmlFor="description">自己紹介</Field.Label>
                 <Textarea
                   id="description"
                   variant="outline"
@@ -98,22 +101,23 @@ const Register = () => {
               </Field.Root>
 
               <Field.Root invalid={!!errors.skill}>
-                <Field.Label>好きな技術</Field.Label>
+                <Field.Label htmlFor="skill">好きな技術</Field.Label>
                 <Controller
                   control={control}
                   name="skill"
                   render={({ field, formState }) => (
                     <Select.Root
+                      id="skill"
                       onValueChange={({ value }) => field.onChange(value)}
                       onInteractOutside={() => field.onBlur()}
                       variant={"outline"}
                       collection={frameworks}
                       invalid={!!formState.errors.skill}
                     >
-                      <Select.HiddenSelect />
+                      <Select.HiddenSelect data-testid="skill-select" />
                       <Select.Control>
                         <Select.Trigger>
-                          <Select.ValueText placeholder="Select option" />
+                          <Select.ValueText placeholder="技術を選択してください" />
                         </Select.Trigger>
                         <Select.IndicatorGroup>
                           <Select.Indicator />
@@ -144,7 +148,7 @@ const Register = () => {
               </Field.Root>
 
               <Field.Root invalid={!!errors.githubId}>
-                <Field.Label>GitHub ID</Field.Label>
+                <Field.Label htmlFor="githubId">GitHub ID</Field.Label>
                 <Input id="githubId" {...register("githubId")} />
                 <Field.ErrorText>
                   {errors.githubId && errors.githubId.message}
@@ -152,7 +156,7 @@ const Register = () => {
               </Field.Root>
 
               <Field.Root invalid={!!errors.qiitaId}>
-                <Field.Label>Qiita ID</Field.Label>
+                <Field.Label htmlFor="qiitaId">Qiita ID</Field.Label>
                 <Input id="qiitaId" {...register("qiitaId")} />
                 <Field.ErrorText>
                   {errors.qiitaId && errors.qiitaId.message}
@@ -160,7 +164,7 @@ const Register = () => {
               </Field.Root>
 
               <Field.Root invalid={!!errors.xId}>
-                <Field.Label>X ID</Field.Label>
+                <Field.Label htmlFor="xId">X ID</Field.Label>
                 <Input id="xId" {...register("xId")} placeholder="@は不要" />
                 <Field.ErrorText>
                   {errors.xId && errors.xId.message}

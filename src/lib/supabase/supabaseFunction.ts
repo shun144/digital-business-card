@@ -1,13 +1,12 @@
 import { type Tables } from "@/lib/supabase/schema";
 import { supabase } from "./supabase";
 import { User } from "@/domain/User";
+
 export const fetchAllUsers = async (): Promise<Tables<"users">[]> => {
   const res = await supabase.from("users").select("*");
-
   if (res.error) {
     throw new Error(res.error.message);
   }
-
   return res.data;
 };
 
@@ -64,11 +63,14 @@ export const insertUser = async (args: RegisterArgs) => {
       qiita_id: args.qiitaId,
     })
     .select("*");
+
   if (userData === null || userData.length === 0) return;
+
   const { error: userSkillError, data: userSkillData } = await supabase
     .from("user_skill")
     .insert({
       user_id: userData[0].id,
       skill_id: args.skill[0],
-    });
+    })
+    .select("*");
 };
