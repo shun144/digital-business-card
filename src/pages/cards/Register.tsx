@@ -49,7 +49,7 @@ const Register = () => {
       try {
         // console.log({ formData });
         // await insertUser(formData);
-        // navigate("/");
+        navigate("/");
       } catch (error) {}
     }),
     [],
