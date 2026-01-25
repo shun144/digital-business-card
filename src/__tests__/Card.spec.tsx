@@ -62,7 +62,7 @@ function createUser() {
     "test",
     "test",
     "test",
-    "React",
+    ["React"],
   );
   return user;
 }

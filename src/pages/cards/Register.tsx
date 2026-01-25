@@ -45,17 +45,12 @@ const Register = () => {
     formState: { errors, isSubmitting },
   } = useForm<RegisterProps>();
 
-  // const onSubmit = handleSubmit(async (formData) => await insertUser(formData));
-
   const onSubmit = useCallback(
     handleSubmit(async (formData) => {
       try {
-        // console.log("★★★0000")
-        // console.log(formData.skill)
-        // console.log({ formData });
         await insertUser(formData);
         navigate("/");
-      } catch (error) { }
+      } catch (error) {}
     }),
     [],
   );
@@ -74,7 +69,7 @@ const Register = () => {
                   id="englishWord"
                   placeholder="coffee"
                   {...register("englishWord", {
-                    required: "好きな英単語は必須項目です",
+                    required: "英単語は必須項目です",
                   })}
                 />
                 <Field.ErrorText>
@@ -84,9 +79,12 @@ const Register = () => {
 
               <Field.Root invalid={!!errors.userName}>
                 <Field.Label htmlFor="userName">お名前</Field.Label>
-                <Input id="userName" {...register("userName", {
-                  required: "お名前は必須項目です",
-                })} />
+                <Input
+                  id="userName"
+                  {...register("userName", {
+                    required: "お名前は必須項目です",
+                  })}
+                />
                 <Field.ErrorText>
                   {errors.userName && errors.userName.message}
                 </Field.ErrorText>
@@ -99,7 +97,9 @@ const Register = () => {
                   variant="outline"
                   autoresize
                   placeholder="<h1>HTMLタグも使えます</h1>"
-                  {...register("description")}
+                  {...register("description", {
+                    required: "自己紹介は必須項目です",
+                  })}
                 />
 
                 <Field.ErrorText>
@@ -194,7 +194,7 @@ const Register = () => {
             登録
           </Button>
         </Card.Footer>
-      </ChakraCard.Root >
+      </ChakraCard.Root>
     </>
   );
 };

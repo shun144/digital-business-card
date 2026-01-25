@@ -11,10 +11,10 @@ const RouteProvider = () => {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route index element={<App />} />
+          <Route index element={<Search />} />
 
           <Route element={<CardsLayout />}>
-            <Route path="/cards/id" element={<Search />} />
+            {/* <Route path="/cards/id" element={<Search />} /> */}
             <Route path="/cards/register" element={<Register />} />
             <Route path="/cards/:id" element={<Cards />} />
           </Route>

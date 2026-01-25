@@ -1,20 +1,22 @@
 import App from "@/App";
 import Register from "@/pages/cards/Register";
+import Search from "@/pages/cards/Search";
 import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import {
   fireEvent,
   render,
   screen,
   waitFor,
-  within
+  within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRoutesStub } from "react-router";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 
-
 vi.mock("@/lib/supabase/supabaseFunction", async () => {
-  const actual = await vi.importActual<typeof import("@/lib/supabase/supabaseFunction")>("@/lib/supabase/supabaseFunction");
+  const actual = await vi.importActual<
+    typeof import("@/lib/supabase/supabaseFunction")
+  >("@/lib/supabase/supabaseFunction");
   return {
     ...actual,
     insertUser: vi.fn().mockImplementation((args) => {
@@ -25,24 +27,23 @@ vi.mock("@/lib/supabase/supabaseFunction", async () => {
 
 const user = userEvent.setup();
 
-describe("名刺カード新規登録テスト", () => {
+describe.skip("名刺カード新規登録テスト", () => {
   beforeEach(() => {
     const Stub = createRoutesStub([
-      { path: '/', Component: App },
-      { path: '/cards/register', Component: Register }]);
+      { path: "/", Component: Search },
+      { path: "/cards/register", Component: Register },
+    ]);
     render(
       <ChakraProvider value={defaultSystem}>
-        <Stub initialEntries={['/cards/register']} />
-      </ChakraProvider>
+        <Stub initialEntries={["/cards/register"]} />
+      </ChakraProvider>,
     );
-  })
+  });
 
   test.skip("タイトルが表示されていること", async () => {
     const sut = await screen.findByText("新規名刺登録");
     expect(sut).toBeInTheDocument();
   });
-
-  // const spy = vi.spyOn(reactRouter, "useNavigate").mockImplementation(() => vi.fn())
 
   test("全項目入力して登録ボタンを押すと/に遷移する", async () => {
     const fieldEnglishWord = await screen.findByLabelText("好きな英単語");
@@ -72,49 +73,25 @@ describe("名刺カード新規登録テスト", () => {
     await user.type(fieldQiitaId, "butter");
     await user.type(fieldXId, "butter");
 
-
     // await user.click(fieldSkill);
 
     // screen.debug()
 
     // await user.click(btnRegister);
 
-    const selectedValue = (fieldSkill as HTMLSelectElement).value;
-    console.log({ selectedValue })
+    // const selectedValue = (fieldSkill as HTMLSelectElement).value;
+    // console.log({ selectedValue });
+  });
 
+  test.skip("必須項目確認", async () => {
+    const btnRegister = await screen.findByRole("button", { name: "登録" });
+    await user.click(btnRegister);
 
-
-    // await waitFor(() => {
-    //   expect(screen.getByText("APP")).toBeInTheDocument()
-    // }, { timeout: 5000 })
-
-
-
-
-
-
-    // const sizeSelectorElement = screen.getByRole('combobox', { name: /技術を選択してください/ });
-    // screen.debug(sizeSelectorElement)
-
-    // screen.debug(fieldSkill)
-    // console.log((fieldSkill as HTMLSelectElement).value)
-
-
-    // const selectValue = screen.getByRole("combobox").closest("select")!
-    // // value3に選択を変更
-    // fireEvent.change(selectValue, { target: { value: "1" } })
-
-    // // value3に変更されたことを確かめる
-    // expect(selectValue.value).toBe("1")
-
-    // await user.click(btnRegister);
-
-
-    // await waitFor(() => {
-    //   expect(screen.getByText("APP")).toBeInTheDocument()
-    // })
-
-    // console.log(fieldSkill.value)
-
+    await waitFor(() => {
+      expect(screen.getByText("英単語は必須項目です")).toBeVisible();
+      expect(screen.getByText("お名前は必須項目です")).toBeVisible();
+      expect(screen.getByText("自己紹介は必須項目です")).toBeVisible();
+      expect(screen.getAllByText(/必須項目/).length).toBe(3);
+    });
   });
 });

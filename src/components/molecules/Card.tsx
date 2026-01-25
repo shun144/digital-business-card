@@ -38,7 +38,7 @@ const Card: FC<Props> = ({ user }) => {
 
             <Stack gap="0">
               <Text fontWeight="bold">好きな技術</Text>
-              <Text>{user.skillName}</Text>
+              <Text>{user.skillNames.join("/")}</Text>
             </Stack>
 
             <HStack justify={"space-between"}>

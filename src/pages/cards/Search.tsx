@@ -1,4 +1,4 @@
-import { Box, Button, Field, Heading, HStack, Input } from "@chakra-ui/react";
+import { Box, Button, Field, Heading, Stack, Input } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -25,11 +25,15 @@ const Search = () => {
   );
 
   return (
-    <>
+    <Stack align={"center"} justify={"center"} px="24px" py="48px">
       <Heading>名刺検索</Heading>
       <Box w="250px" p="24px" bg="white" rounded={"sm"} shadow={"md"}>
         <form id="search-card" onSubmit={onSubmit}>
-          <Field.Root invalid={!!errors.searchId}>
+          <Field.Root
+            invalid={!!errors.searchId}
+            flexDirection={"row"}
+            alignItems={"center"}
+          >
             <Field.Label>ID</Field.Label>
             <Input
               id="searchId"
@@ -52,7 +56,7 @@ const Search = () => {
           </Button>
         </form>
       </Box>
-    </>
+    </Stack>
   );
 };
 

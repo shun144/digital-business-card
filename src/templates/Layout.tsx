@@ -4,7 +4,7 @@ import { Outlet } from "react-router";
 
 const Layout = () => {
   return (
-    <Box height="100vh" bg="gray.100">
+    <Box height="100vh" bg="gray.100" overflowY={"scroll"}>
       <Outlet />
     </Box>
   );
