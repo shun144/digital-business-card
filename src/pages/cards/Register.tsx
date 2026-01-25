@@ -48,9 +48,9 @@ const Register = () => {
     handleSubmit(async (formData) => {
       try {
         // console.log({ formData });
-        // await insertUser(formData);
+        await insertUser(formData);
         navigate("/");
-      } catch (error) {}
+      } catch (error) { }
     }),
     [],
   );
@@ -176,6 +176,8 @@ const Register = () => {
         <Card.Footer justifyContent="flex-end">
           <Button
             type="submit"
+            // type="button"
+            // onClick={() => navigate("/")}
             form="register"
             variant="solid"
             loading={isSubmitting}
@@ -183,7 +185,7 @@ const Register = () => {
             登録
           </Button>
         </Card.Footer>
-      </ChakraCard.Root>
+      </ChakraCard.Root >
     </>
   );
 };
