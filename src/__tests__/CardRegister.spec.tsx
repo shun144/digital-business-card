@@ -27,7 +27,7 @@ vi.mock("@/lib/supabase/supabaseFunction", async () => {
 
 const user = userEvent.setup();
 
-describe.skip("名刺カード新規登録テスト", () => {
+describe("名刺カード新規登録テスト", () => {
   beforeEach(() => {
     const Stub = createRoutesStub([
       { path: "/", Component: Search },
@@ -67,7 +67,7 @@ describe.skip("名刺カード新規登録テスト", () => {
     await user.type(fieldEnglishWord, "butter2");
     await user.type(fieldUserName, "butter");
     await user.type(fieldDescription, "butter");
-    // await fireEvent.change(fieldSkill, { target: { value: 2 } });
+    await fireEvent.change(fieldSkill, { target: { value: 2 } });
     // await user.selectOptions(fieldSkill, "1")
     await user.type(fieldGithubId, "butter");
     await user.type(fieldQiitaId, "butter");
@@ -77,10 +77,10 @@ describe.skip("名刺カード新規登録テスト", () => {
 
     // screen.debug()
 
-    // await user.click(btnRegister);
+    await user.click(btnRegister);
 
-    // const selectedValue = (fieldSkill as HTMLSelectElement).value;
-    // console.log({ selectedValue });
+    const selectedValue = (fieldSkill as HTMLSelectElement).value;
+    console.log({ selectedValue });
   });
 
   test.skip("必須項目確認", async () => {
