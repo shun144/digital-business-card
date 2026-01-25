@@ -64,6 +64,7 @@ export const insertUser = async (args: RegisterArgs) => {
     })
     .select("*");
 
+
   if (userData === null || userData.length === 0) return;
 
   const { error: userSkillError, data: userSkillData } = await supabase
@@ -73,4 +74,5 @@ export const insertUser = async (args: RegisterArgs) => {
       skill_id: args.skill[0],
     })
     .select("*");
+
 };

@@ -1,3 +1,4 @@
+// import { insertUser } from "@/lib/supabase/supabaseFunction";
 import { insertUser } from "@/lib/supabase/supabaseFunction";
 import {
   Button,
@@ -26,7 +27,7 @@ interface RegisterProps {
   xId: string;
 }
 
-const frameworks = createListCollection({
+const skillsOptions = createListCollection({
   items: [
     { label: "React", value: 1 },
     { label: "TypeScript", value: 2 },
@@ -44,9 +45,13 @@ const Register = () => {
     formState: { errors, isSubmitting },
   } = useForm<RegisterProps>();
 
+  // const onSubmit = handleSubmit(async (formData) => await insertUser(formData));
+
   const onSubmit = useCallback(
     handleSubmit(async (formData) => {
       try {
+        // console.log("★★★0000")
+        // console.log(formData.skill)
         // console.log({ formData });
         await insertUser(formData);
         navigate("/");
@@ -79,7 +84,9 @@ const Register = () => {
 
               <Field.Root invalid={!!errors.userName}>
                 <Field.Label htmlFor="userName">お名前</Field.Label>
-                <Input id="userName" {...register("userName")} />
+                <Input id="userName" {...register("userName", {
+                  required: "お名前は必須項目です",
+                })} />
                 <Field.ErrorText>
                   {errors.userName && errors.userName.message}
                 </Field.ErrorText>
@@ -108,10 +115,11 @@ const Register = () => {
                   render={({ field, formState }) => (
                     <Select.Root
                       id="skill"
+                      multiple
                       onValueChange={({ value }) => field.onChange(value)}
                       onInteractOutside={() => field.onBlur()}
                       variant={"outline"}
-                      collection={frameworks}
+                      collection={skillsOptions}
                       invalid={!!formState.errors.skill}
                     >
                       <Select.HiddenSelect data-testid="skill-select" />
@@ -126,12 +134,13 @@ const Register = () => {
                       <Portal>
                         <Select.Positioner>
                           <Select.Content>
-                            {frameworks.items.map((framework) => (
+                            {skillsOptions.items.map((skillItem) => (
                               <Select.Item
-                                item={framework}
-                                key={framework.value}
+                                data-testid="opt"
+                                item={skillItem}
+                                key={skillItem.value}
                               >
-                                {framework.label}
+                                {skillItem.label}
                                 <Select.ItemIndicator />
                               </Select.Item>
                             ))}

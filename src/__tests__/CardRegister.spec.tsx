@@ -1,27 +1,16 @@
-import { describe, vi, test, expect, beforeEach } from "vitest";
+import App from "@/App";
+import Register from "@/pages/cards/Register";
+import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import {
-  act,
+  fireEvent,
   render,
   screen,
   waitFor,
-  cleanup,
-  findByTestId,
-  fireEvent,
+  within
 } from "@testing-library/react";
-import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import userEvent from "@testing-library/user-event";
-import { User } from "@/domain/User";
-import Register from "@/pages/cards/Register";
-import * as reactRouter from "react-router";
-import * as supabaseFunc from "@/lib/supabase/supabaseFunction";
-import RouteProvider from "@/router/RouteProvider";
-import { BrowserRouter, Route, Routes, createRoutesStub } from "react-router";
-import Layout from "@/templates/Layout";
-import App from "@/App";
-import CardsLayout from "@/templates/CardsLayout";
-import Search from "@/pages/cards/Search";
-import Cards from "@/pages/cards/Cards";
-import RootProvider from "@/provider/RootProvider";
+import { createRoutesStub } from "react-router";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 
 
 vi.mock("@/lib/supabase/supabaseFunction", async () => {
@@ -60,26 +49,72 @@ describe("名刺カード新規登録テスト", () => {
     const fieldUserName = await screen.findByLabelText("お名前");
     const fieldDescription = await screen.findByLabelText("自己紹介");
     const fieldSkill = await screen.findByTestId("skill-select");
+
+    // const fieldSkill = within(
+    //   screen.getByTestId('skill-select')
+    // ).getByRole('combobox')
+    // const test = await within(fieldSkill).findAllByRole('option')
+    // const test = await screen.findByRole("listbox")
+    // const test = await screen.findAllByTestId('opt')
+    // console.log(test.length)
+
     const fieldGithubId = await screen.findByLabelText("GitHub ID");
     const fieldQiitaId = await screen.findByLabelText("Qiita ID");
     const fieldXId = await screen.findByLabelText("X ID");
     const btnRegister = await screen.findByRole("button", { name: "登録" });
 
-    await user.type(fieldEnglishWord, "pizza");
-    await user.type(fieldUserName, "pizza");
-    await user.type(fieldDescription, "pizza");
-    await fireEvent.change(fieldSkill, { target: { value: 1 } });
-    await user.type(fieldGithubId, "pizza");
-    await user.type(fieldQiitaId, "pizza");
-    await user.type(fieldXId, "pizza");
-    await user.click(btnRegister);
+    await user.type(fieldEnglishWord, "butter2");
+    await user.type(fieldUserName, "butter");
+    await user.type(fieldDescription, "butter");
+    // await fireEvent.change(fieldSkill, { target: { value: 2 } });
+    // await user.selectOptions(fieldSkill, "1")
+    await user.type(fieldGithubId, "butter");
+    await user.type(fieldQiitaId, "butter");
+    await user.type(fieldXId, "butter");
 
 
-    await waitFor(() => {
-      expect(screen.getByText("APP")).toBeInTheDocument()
-    })
+    // await user.click(fieldSkill);
 
-    screen.debug(fieldSkill)
+    // screen.debug()
+
+    // await user.click(btnRegister);
+
+    const selectedValue = (fieldSkill as HTMLSelectElement).value;
+    console.log({ selectedValue })
+
+
+
+    // await waitFor(() => {
+    //   expect(screen.getByText("APP")).toBeInTheDocument()
+    // }, { timeout: 5000 })
+
+
+
+
+
+
+    // const sizeSelectorElement = screen.getByRole('combobox', { name: /技術を選択してください/ });
+    // screen.debug(sizeSelectorElement)
+
+    // screen.debug(fieldSkill)
+    // console.log((fieldSkill as HTMLSelectElement).value)
+
+
+    // const selectValue = screen.getByRole("combobox").closest("select")!
+    // // value3に選択を変更
+    // fireEvent.change(selectValue, { target: { value: "1" } })
+
+    // // value3に変更されたことを確かめる
+    // expect(selectValue.value).toBe("1")
+
+    // await user.click(btnRegister);
+
+
+    // await waitFor(() => {
+    //   expect(screen.getByText("APP")).toBeInTheDocument()
+    // })
+
+    // console.log(fieldSkill.value)
 
   });
 });
