@@ -1,4 +1,3 @@
-// import { insertUser } from "@/lib/supabase/supabaseFunction";
 import { insertUser } from "@/lib/supabase/supabaseFunction";
 import {
   Button,
@@ -21,7 +20,7 @@ interface RegisterProps {
   englishWord: string;
   userName: string;
   description: string;
-  skill: number[];
+  skills: number[];
   githubId: string;
   qiitaId: string;
   xId: string;
@@ -107,22 +106,22 @@ const Register = () => {
                 </Field.ErrorText>
               </Field.Root>
 
-              <Field.Root invalid={!!errors.skill}>
-                <Field.Label htmlFor="skill">好きな技術</Field.Label>
+              <Field.Root invalid={!!errors.skills}>
+                <Field.Label htmlFor="skills">好きな技術</Field.Label>
                 <Controller
                   control={control}
-                  name="skill"
+                  name="skills"
                   render={({ field, formState }) => (
                     <Select.Root
-                      id="skill"
+                      id="skills"
                       multiple
                       onValueChange={({ value }) => field.onChange(value)}
                       onInteractOutside={() => field.onBlur()}
                       variant={"outline"}
                       collection={skillsOptions}
-                      invalid={!!formState.errors.skill}
+                      invalid={!!formState.errors.skills}
                     >
-                      <Select.HiddenSelect data-testid="skill-select" />
+                      <Select.HiddenSelect />
                       <Select.Control>
                         <Select.Trigger>
                           <Select.ValueText placeholder="技術を選択してください" />
@@ -136,7 +135,6 @@ const Register = () => {
                           <Select.Content>
                             {skillsOptions.items.map((skillItem) => (
                               <Select.Item
-                                data-testid="opt"
                                 item={skillItem}
                                 key={skillItem.value}
                               >
@@ -152,7 +150,7 @@ const Register = () => {
                 />
 
                 <Field.ErrorText>
-                  {errors.skill && errors.skill.message}
+                  {errors.skills && errors.skills.message}
                 </Field.ErrorText>
               </Field.Root>
 
@@ -185,8 +183,6 @@ const Register = () => {
         <Card.Footer justifyContent="flex-end">
           <Button
             type="submit"
-            // type="button"
-            // onClick={() => navigate("/")}
             form="register"
             variant="solid"
             loading={isSubmitting}

@@ -19,8 +19,9 @@ interface Props {
 
 const Card: FC<Props> = ({ user }) => {
   const navigate = useNavigate();
+
   const clickBackBtn = useCallback(() => {
-    navigate("/cards/id");
+    navigate("/");
   }, []);
 
   return (

@@ -73,6 +73,23 @@ export const fetchUser = async (userId: string) => {
   // return users;
 };
 
+export const deleteUserCreatedTheDayBefore = async () => {
+  const yesterdayFrom = new Date();
+  yesterdayFrom.setDate(yesterdayFrom.getDate() - 1);
+  yesterdayFrom.setUTCHours(0, 0, 0, 0);
+
+  const yesterDayTo = new Date();
+  yesterDayTo.setDate(yesterDayTo.getDate() - 1);
+  yesterDayTo.setUTCHours(23, 59, 59, 999);
+
+  console.log(yesterdayFrom, yesterDayTo);
+
+  // try {
+  //   // await supabase.from("users").delete()
+
+  // } catch (error) {}
+};
+
 // export const fetchUser = async (userId: string) => {
 //   const userWithSkillQuery = await supabase
 //     .from("user_skill")
@@ -108,7 +125,7 @@ interface RegisterArgs {
   englishWord: string;
   userName: string;
   description: string;
-  skill: number[];
+  skills: number[];
   githubId: string;
   qiitaId: string;
   xId: string;
@@ -133,7 +150,7 @@ export const insertUser = async (args: RegisterArgs) => {
     .from("user_skill")
     .insert({
       user_id: userData[0].id,
-      skill_id: args.skill,
+      skill_id: args.skills,
     })
     .select("*");
 };

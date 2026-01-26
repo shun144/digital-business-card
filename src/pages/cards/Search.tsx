@@ -24,6 +24,10 @@ const Search = () => {
     [],
   );
 
+  const clickToRegister = useCallback(() => {
+    navigate("/cards/register");
+  }, []);
+
   return (
     <Stack align={"center"} justify={"center"} px="24px" py="48px">
       <Heading>名刺検索</Heading>
@@ -34,7 +38,7 @@ const Search = () => {
             flexDirection={"row"}
             alignItems={"center"}
           >
-            <Field.Label>ID</Field.Label>
+            <Field.Label htmlFor="searchId">ID</Field.Label>
             <Input
               id="searchId"
               placeholder="coffee"
@@ -55,6 +59,8 @@ const Search = () => {
             検索
           </Button>
         </form>
+
+        <Button onClick={clickToRegister}>新規登録はこちら</Button>
       </Box>
     </Stack>
   );

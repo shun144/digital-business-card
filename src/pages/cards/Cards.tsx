@@ -6,6 +6,7 @@ import { useParams } from "react-router";
 
 const Cards = () => {
   const { id } = useParams();
+
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -13,7 +14,6 @@ const Cards = () => {
     if (!id) return;
     (async () => {
       try {
-        await fetchUser(id);
         const fetchedUser = await fetchUser(id);
         setUsers(fetchedUser);
         setIsLoading(false);
