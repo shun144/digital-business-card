@@ -1,0 +1,9 @@
+name: Delete user created the day before at6
+on:
+  schedule:
+    - cron: "9 * * * *"
+jobs:
+  sample:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello world"
