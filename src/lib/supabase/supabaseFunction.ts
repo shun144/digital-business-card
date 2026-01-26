@@ -82,12 +82,34 @@ export const deleteUserCreatedTheDayBefore = async () => {
   yesterDayTo.setDate(yesterDayTo.getDate() - 1);
   yesterDayTo.setUTCHours(23, 59, 59, 999);
 
-  console.log(yesterdayFrom, yesterDayTo);
+  const querySelectUsers = await supabase
+    .from("users")
+    .select("id")
+    .gte("created_at", yesterdayFrom.toUTCString())
+    .lte("created_at", yesterDayTo.toUTCString());
 
-  // try {
-  //   // await supabase.from("users").delete()
+  if (querySelectUsers.error) {
+    throw new Error("ユーザー情報の取得に失敗しました");
+  }
 
-  // } catch (error) {}
+  const deleteUsers = querySelectUsers.data.map((x) => x.id);
+
+  if (deleteUsers.length === 0) {
+    return;
+  }
+
+  const queryDeleteUserSkill = await supabase
+    .from("user_skill")
+    .delete()
+    .in("user_id", deleteUsers);
+
+  const queryDeleteUsers = await supabase
+    .from("users")
+    .delete()
+    .in("id", deleteUsers);
+
+  // console.log("user_skill削除結果", queryDeleteUserSkill.status);
+  // console.log("users削除結果", queryDeleteUsers.status);
 };
 
 // export const fetchUser = async (userId: string) => {
