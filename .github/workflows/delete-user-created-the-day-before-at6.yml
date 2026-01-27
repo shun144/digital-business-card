@@ -1,10 +1,10 @@
 name: Delete user created the day before at6
 on:
-  push:
-    branches:
-      - master
+  #   push:
+  #     branches:
+  #       - master
   schedule:
-    - cron: "30 * * * *"
+    - cron: "32 * * * *"
 jobs:
   sample:
     runs-on: ubuntu-latest
