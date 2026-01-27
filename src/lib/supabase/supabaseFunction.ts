@@ -108,6 +108,10 @@ export const deleteUserCreatedTheDayBefore = async () => {
     .delete()
     .in("id", deleteUsers);
 
+  if (!queryDeleteUserSkill.error && !queryDeleteUsers.error) {
+    console.log("削除完了", deleteUsers.length);
+  }
+
   // console.log("user_skill削除結果", queryDeleteUserSkill.status);
   // console.log("users削除結果", queryDeleteUsers.status);
 };
