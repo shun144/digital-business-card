@@ -1,9 +1,20 @@
 name: Delete user created the day before at6
 on:
+  push:
+    branches:
+      - master
   schedule:
     - cron: "9 * * * *"
 jobs:
   sample:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Hello world"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npx tsx -r dotenv/config ./batch/index.ts
+        env:
+          VITE_SUPABASE_URL: ${{secrets.VITE_SUPABASE_URL}}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{secrets.VITE_SUPABASE_PUBLISHABLE_KEY}}

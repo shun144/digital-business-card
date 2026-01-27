@@ -95,7 +95,7 @@ export const deleteUserCreatedTheDayBefore = async () => {
   const deleteUsers = querySelectUsers.data.map((x) => x.id);
 
   if (deleteUsers.length === 0) {
-    return;
+    console.log("削除対象ユーザは0件");
   }
 
   const queryDeleteUserSkill = await supabase
