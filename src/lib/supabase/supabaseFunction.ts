@@ -53,24 +53,6 @@ export const fetchUser = async (userId: string) => {
   );
 
   return [user];
-
-  // if (userWithSkillQuery.data.length === 0) {
-  //   throw new Error("該当のユーザーは存在しません");
-  // }
-
-  // const users = userWithSkillQuery.data.map((x) => {
-  //   return new User(
-  //     x.users.id,
-  //     x.users.name,
-  //     x.users.description,
-  //     x.users.github_id,
-  //     x.users.qiita_id,
-  //     x.users.x_id,
-  //     x.skills.name,
-  //   );
-  // });
-
-  // return users;
 };
 
 export const deleteUserCreatedTheDayBefore = async () => {
@@ -111,9 +93,6 @@ export const deleteUserCreatedTheDayBefore = async () => {
   if (!queryDeleteUserSkill.error && !queryDeleteUsers.error) {
     console.log("削除完了", deleteUsers.length);
   }
-
-  // console.log("user_skill削除結果", queryDeleteUserSkill.status);
-  // console.log("users削除結果", queryDeleteUsers.status);
 };
 
 // export const fetchUser = async (userId: string) => {
@@ -158,25 +137,41 @@ interface RegisterArgs {
 }
 
 export const insertUser = async (args: RegisterArgs) => {
-  const { error: userError, data: userData } = await supabase
-    .from("users")
-    .insert({
-      id: args.englishWord,
-      name: args.userName,
-      description: args.description,
-      github_id: args.githubId,
-      x_id: args.xId,
-      qiita_id: args.qiitaId,
-    })
-    .select("*");
+  const { error } = await supabase.rpc("insert_user_and_userskill", {
+    _user_id: args.englishWord,
+    _name: args.userName,
+    _description: args.description,
+    _skills: args.skills,
+  });
 
-  if (userData === null || userData.length === 0) return;
-
-  const { error: userSkillError, data: userSkillData } = await supabase
-    .from("user_skill")
-    .insert({
-      user_id: userData[0].id,
-      skill_id: args.skills,
-    })
-    .select("*");
+  if (error) {
+    // → PostgreSQLのraiseで指定したエラーメッセージがここに出る
+    console.error("登録エラー:", error.message);
+  } else {
+    // → 正常終了時は error が null で、data も null
+    console.log("登録成功！");
+  }
 };
+// export const insertUser = async (args: RegisterArgs) => {
+//   const { error: userError, data: userData } = await supabase
+//     .from("users")
+//     .insert({
+//       id: args.englishWord,
+//       name: args.userName,
+//       description: args.description,
+//       github_id: args.githubId,
+//       x_id: args.xId,
+//       qiita_id: args.qiitaId,
+//     })
+//     .select("*");
+
+//   if (userData === null || userData.length === 0) return;
+
+//   const { error: userSkillError, data: userSkillData } = await supabase
+//     .from("user_skill")
+//     .insert({
+//       user_id: userData[0].id,
+//       skill_id: args.skills,
+//     })
+//     .select("*");
+// };
